@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-8 mx-auto">
+    <div class="text-center">
+      <h4>Drag and Drop to see IP locations on the map!</h4>
+      <div class="leaflet-container">
+        <div *ngIf="mapOptions" class="mx-auto"
+             leaflet
+             (leafletMapMoveEnd)="onMapMoveEnd($event)"
+             [leafletLayersControl]="layersControl"
+             [leafletOptions]="mapOptions">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
