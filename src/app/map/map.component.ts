@@ -35,6 +35,7 @@ export class MapComponent implements OnInit {
   });
   layersControl: any;
   heatData: HeatmapNode[] = [];
+  zoomLevel = 6;
 
   private static handleError(err: any): void {
     console.error(err); // TODO actually handle the error
@@ -57,8 +58,10 @@ export class MapComponent implements OnInit {
       zoom: 6,
       center: latLng(39.76, -86.15),
       maxZoom: 9,
-      minZoom: 5
+      minZoom: 4
     };
+
+    this.zoomLevel = this.mapOptions.zoom;
   }
 
   onMapMoveEnd(event: LeafletEvent): void {
@@ -68,8 +71,11 @@ export class MapComponent implements OnInit {
   }
 
   // fetch and subsequently set heat data from API
+
   private getHeatData(bounds: LatLngBounds): void {
-    this.geoNodeService.getDataInBounds(bounds).subscribe(
+    // scale request based on zoom level
+    const limit = 6E5 / this.zoomLevel; // TODO tune this later
+    this.geoNodeService.getDataInBounds(bounds, limit).subscribe(
       next => {
         this.setHeatDataFromGeonodes(next.results);
       },
@@ -90,5 +96,9 @@ export class MapComponent implements OnInit {
 
   private refreshHeatLayer(): void {
     this.heatmapLayer.setData({data: this.heatData});
+  }
+
+  setZoomLevel(num: number): void {
+    this.zoomLevel = num;
   }
 }

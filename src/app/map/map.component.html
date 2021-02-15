@@ -6,6 +6,7 @@
         <div *ngIf="mapOptions" class="mx-auto"
              leaflet
              (leafletMapMoveEnd)="onMapMoveEnd($event)"
+             (leafletZoomChange)="setZoomLevel($event)"
              [leafletLayersControl]="layersControl"
              [leafletLayers]="layers"
              [leafletOptions]="mapOptions">
